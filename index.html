@@ -1,13 +1,27 @@
-<!doctype html>
+<?php
+header('Content-Type: text/html; charset=utf-8');
+?>
 <html>
 <head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<title>Silly Simple</title>
 
 </head>
 <body>
+
 <button id="silly">Do it</button>
 <button id="clear">Clear</button>
 <div id="results"></div>
+<form>
+<select name="users" onchange="showUser(this.value)">
+<option value="">Valitse:</option>
+<option value="1">Henkilö 1</option>
+
+</select>
+</form>
+<br>
+<div id="txtHint"><b>Person info will be listed here.</b></div>
+
 	<script src="js/silly.js"></script>
 	<script src="js/zepto.min.js"></script>
 <script>
@@ -17,6 +31,27 @@ $('#silly').click(function() {
 $('#clear').click(function() {
 	$('#results').html('');
 });
+</script>
+<script>
+function showUser(str) {
+  if (str=="") {
+    document.getElementById("txtHint").innerHTML="";
+    return;
+  }
+  if (window.XMLHttpRequest) {
+    // code for IE7+, Firefox, Chrome, Opera, Safari
+    xmlhttp=new XMLHttpRequest();
+  } else { // code for IE6, IE5
+    xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+  }
+  xmlhttp.onreadystatechange=function() {
+    if (xmlhttp.readyState==4 && xmlhttp.status==200) {
+      document.getElementById("txtHint").innerHTML=xmlhttp.responseText;
+    }
+  }
+  xmlhttp.open("GET","getuser.php?q="+str,true);
+  xmlhttp.send();
+}
 </script>
 </body>
 </html>
